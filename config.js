@@ -1,6 +1,6 @@
 {
-  'port': 1337,
-  'mongoose': {
-    'url': 'mongodb://localhost/test',
+  "port": 1337,
+  "mongoose": {
+    "url": "mongodb://localhost/test1"
   }
 }

@@ -1,0 +1,3 @@
+http POST http://localhost:1337/api/user/create name={'first': 'test', 'second': 'user'} email='test@email.com'
+
+http POST http://localhost:1337/api/pet/create name='test' sort='mops' userId= weight=5 age=2
