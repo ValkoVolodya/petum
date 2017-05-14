@@ -14,9 +14,7 @@
     "mongodb": "^2.2.26",
     "mongoose": "^4.9.5",
     "nconf": "^0.8.4",
-    "winston": "^2.3.1"
-  },
-  "devDependencies": {
+    "winston": "^2.3.1",
     "body-parser": "^1.17.1",
     "cookie-parser": "^1.4.3",
     "morgan": "^1.8.1"
