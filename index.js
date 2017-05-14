@@ -35,6 +35,7 @@ app.post('/api/record/create', record.create);
 
 
 app.listen(
+  process.env.PORT ||
   config.get('port'),
   () => log.info('Server listening on port ' + config.get('port'))
 );
