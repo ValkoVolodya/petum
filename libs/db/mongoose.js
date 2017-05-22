@@ -9,7 +9,7 @@ if (process.env.MONGOLAB_URI) {
   mongoose.connect(process.env.MONGOLAB_URI, function (error) {
     if (error) console.error(error);
     else console.log('mongo connected');
-});
+  });
 } else {
   mongoose.connect(config.get('mongoose:uri'));
 }

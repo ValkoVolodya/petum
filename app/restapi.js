@@ -10,5 +10,4 @@ app.set('port', process.env.PORT || config.get('port') || 3000);
 
 var server = app.listen(app.get('port'), function() {
   debug('Server listening on port ' + app.get('port'));
-  log.info('Server listening on port ' + app.get('port'));
 });

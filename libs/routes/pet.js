@@ -2,11 +2,11 @@ var express = require('express');
 var passport = require('passport');
 var router = express.Router();
 
-var libs = process.cwd() + '/libs';
+var libs = process.cwd() + '/libs/';
 var log = require(libs + 'log')(module);
 
 var db = require(libs + 'db/mongoose');
-var Pet = require(libs + 'model/Pet');
+var Pet = require(libs + 'model/pet');
 
 router.get(
   '/',
@@ -102,3 +102,5 @@ exports.create = function(req, res) {
     }
   });
 }
+
+module.exports = router;
