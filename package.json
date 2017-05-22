@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "description": "Project for always keep your pet healthy",
   "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ValkoVolodya/petum"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node ./app/restapi.js"
   },
   "author": "",
   "license": "ISC",
@@ -13,11 +17,17 @@
     "body-parser": "^1.17.1",
     "cookie-parser": "^1.4.3",
     "express": "^4.15.2",
+    "faker": "^4.1.0",
     "method-override": "^2.3.8",
     "mongodb": "^2.2.26",
     "mongoose": "^4.9.5",
     "morgan": "^1.8.1",
     "nconf": "^0.8.4",
+    "oauth2orize": "^1.8.0",
+    "passport": "^0.3.2",
+    "passport-http": "^0.3.0",
+    "passport-http-bearer": "^1.0.1",
+    "passport-oauth2-client-password": "^0.1.2",
     "winston": "^2.3.1"
   }
 }
