@@ -13,7 +13,7 @@ var log = require('./log')(module);
 var oauth2 = require('./auth/oauth2');
 
 var api = require('./routes/api');
-var user = require('./routes/users');
+var user = require('./routes/user');
 var pet = require('./routes/pet');
 var record = require('./routes/record');
 

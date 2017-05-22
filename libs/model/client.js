@@ -1,4 +1,4 @@
-var mongoose = requre('mongoose'),
+var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     Client = new Schema({
       name: {

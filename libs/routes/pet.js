@@ -20,7 +20,7 @@ router.get(
         log.error('Internal server error(%d): %s',res.statusCode,err.message);
         return res.send({ error: 'Server error' });
       }
-    }
+    });
   }
 );
 

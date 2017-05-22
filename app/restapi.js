@@ -1,7 +1,7 @@
-
+#!/usr/bin/env node
 var debug = require('debug')('restapi');
 
-var libs = process.cwd() + './libs/';
+var libs = process.cwd() + '/libs/';
 var config = require(libs + 'config');
 var log = require(libs + 'log')(module);
 var app = require(libs + 'app');
