@@ -4,6 +4,6 @@
     "tokenLife": 3600
   },
   "mongoose": {
-    "url": "mongodb://localhost/test1"
+    "uri": "mongodb://localhost/test1"
   }
 }
