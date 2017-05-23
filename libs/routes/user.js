@@ -38,7 +38,6 @@ router.get(
 
 router.post(
   '/create',
-  passport.authenticate('bearer', { session: false }),
   function(req, res) {
     var user = new User({
       name: req.body.name,
