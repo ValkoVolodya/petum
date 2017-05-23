@@ -1,4 +1,4 @@
-ar express = require('express');
+var express = require('express');
 
 var libs = process.cwd() + '/libs/';
 
