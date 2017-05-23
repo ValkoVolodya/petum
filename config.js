@@ -4,6 +4,6 @@
     "tokenLife": 3600
   },
   "mongoose": {
-    "uri": "mongodb://localhost/test1"
+    "uri": "mongodb://petum:petum@ds145780.mlab.com:45780/heroku_lx2qvmcg"
   }
 }
