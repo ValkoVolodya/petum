@@ -25,14 +25,14 @@ router.get(
     return User.findById(req.params.id, function (err, user) {
       if (!user) {
         res.statusCode = 404;
-        return res.send({ error: 'Not Found' });
+        return res.send({ status: 'Not Found' });
       }
       if (!err) {
-        return res.send({ 'status' : status.STATUS_OK, user: user });
+        return res.send({ status : status.STATUS_OK, user: user });
       } else {
         res.statusCode = 500;
         log.error('Internal server error(%d): %s',res.statusCode,err.message);
-        return res.send({ error: 'Server error' });
+        return res.send({ status: 'Server error' });
       }
     });
   }
@@ -55,10 +55,10 @@ router.post(
           console.log(err);
           if(err.name == 'ValidationError') {
               res.statusCode = 400;
-              res.send({ error: status.WRONG_JSON });
+              res.send({ status: status.WRONG_JSON });
           } else {
               res.statusCode = 500;
-              res.send({ error: 'Server error' });
+              res.send({ status: 'Server error' });
           }
           log.error('Internal error(%d): %s',res.statusCode,err.message);
       }
