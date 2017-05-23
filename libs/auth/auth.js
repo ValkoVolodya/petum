@@ -14,16 +14,16 @@ var RefreshToken = require(libs + 'model/refreshToken');
 
 passport.use(new BasicStrategy(
   function(username, password, done) {
-    Client.findOne({ clientId: username }, function(err, client) {
+    User.findOne({ name: username }, function(err, user) {
       if (err) {
       	return done(err);
       }
 
-      if (!client) {
+      if (!user) {
       	return done(null, false);
       }
 
-      if (client.clientSecret !== password) {
+      if (user.password !== password) {
       	return done(null, false);
       }
 
