@@ -3,6 +3,7 @@ var passport = require('passport');
 var router = express.Router();
 
 var libs = process.cwd() + '/libs/';
+var log = require(libs + 'log')(module);
 
 var db = require(libs + 'db/mongoose');
 var User = require(libs + 'model/user');
