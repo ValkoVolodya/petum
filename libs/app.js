@@ -25,12 +25,11 @@ app.use(cookieParser());
 app.use(methodOverride());
 app.use(passport.initialize());
 
-app.use('/', api);
 app.use('/api', api);
 app.use('/api/user', user);
 app.use('/api/pet', pet);
 app.use('/api/record', record);
-app.use('/api/oauth/token', oauth2.token);
+app.use('/api/oauth', oauth2.token);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next){

@@ -4,6 +4,7 @@ var ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy
 var BearerStrategy = require('passport-http-bearer').Strategy;
 
 var libs = process.cwd() + '/libs/';
+var log = require(libs + 'log')(module);
 
 var config = require(libs + 'config');
 
@@ -13,8 +14,9 @@ var AccessToken = require(libs + 'model/accessToken');
 var RefreshToken = require(libs + 'model/refreshToken');
 
 passport.use(new BasicStrategy(
-  function(username, password, done) {
-    User.findOne({ name: username }, function(err, user) {
+  function(name, password, done) {
+    log.info(`${name}, ${password}`);
+    User.findOne({ name: name }, function(err, user) {
       if (err) {
       	return done(err);
       }
@@ -34,7 +36,9 @@ passport.use(new BasicStrategy(
 
 passport.use(new ClientPasswordStrategy(
   function(clientId, clientSecret, done) {
+    log.info(`${сlientId}, ${clientSecret}`);
     Client.findOne({ clientId: clientId }, function(err, client) {
+      log.info(err);
       if (err) {
       	return done(err);
       }

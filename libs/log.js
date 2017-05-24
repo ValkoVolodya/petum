@@ -16,7 +16,7 @@ function logger(module) {
       //   colorize: false
       // }),
       new winston.transports.Console({
-        level: 'debug',
+        level: 'info',
         label: getFilePath(module),
         handleException: true,
         json: false,

@@ -52,7 +52,7 @@ router.post(
           log.info("user created");
           return res.send({ status: status.STATUS_OK });
       } else {
-          console.log(err);
+          log.info(err);
           if(err.name == 'ValidationError') {
               res.statusCode = 400;
               res.send({ status: status.WRONG_JSON });
