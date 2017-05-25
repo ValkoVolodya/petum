@@ -17,7 +17,7 @@
     "body-parser": "^1.17.1",
     "cookie-parser": "^1.4.3",
     "express": "^4.15.2",
-    "faker": "^4.1.0",
+    "jsonwebtoken": "^5.7.0",
     "method-override": "^2.3.8",
     "mongodb": "^2.2.26",
     "mongoose": "^4.9.5",
