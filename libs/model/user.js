@@ -7,6 +7,10 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema,
 
   User = new Schema({
+    name: {
+      type: String,
+      required: true,
+    },
     email: {
       type: String,
       lowercase: true,
@@ -31,7 +35,6 @@ User.pre('save', function(next) {
   var user = this;
   if (this.isModified('password') || this.isNew) {
       user.password = user.encryptPassword(user.password);
-      log.info('fuck', user.password);
       next();
   } else {
     return next();
