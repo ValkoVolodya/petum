@@ -3,14 +3,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
+var jwt = require('jsonwebtoken');
 var methodOverride = require('method-override');
 
 var libs = process.cwd() + '/libs/';
-require(libs + 'auth/auth');
+require(libs + 'auth/auth')(passport);
 
 var config = require('./config');
 var log = require('./log')(module);
-var oauth2 = require('./auth/oauth2');
 
 var api = require('./routes/api');
 var user = require('./routes/user');
@@ -29,7 +29,6 @@ app.use('/api', api);
 app.use('/api/user', user);
 app.use('/api/pet', pet);
 app.use('/api/record', record);
-app.use('/api/oauth', oauth2.token);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next){

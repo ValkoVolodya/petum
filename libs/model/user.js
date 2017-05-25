@@ -1,33 +1,46 @@
 var mongoose = require('mongoose'),
-    crypto = require('crypto'),
+  crypto = require('crypto'),
+  passwordHash = require('password-hash'),
+  libs = process.cwd() + '/libs/',
+  log = require(libs + 'log')(module),
 
-    Schema = mongoose.Schema,
+  Schema = mongoose.Schema,
 
-    User = new Schema({
-      name: {
-        type: String,
-        required: true,
-      },
-      email: {
-        type: String,
-        required: true,
-      },
-      hashedPassword: {
-        type: String,
-        required: true
-      },
-      salt: {
-        type: String,
-        required: true
-      },
-      created: {
-        type: Date,
-        default: Date.now
-      }
-    });
+  User = new Schema({
+    email: {
+      type: String,
+      lowercase: true,
+      unique: true,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true
+    },
+    created: {
+      type: Date,
+      default: Date.now
+    }
+  },
+  {
+    toObject: { virtuals: true },
+    toJSON: { virtuals: true }
+  }
+);
+User.pre('save', function(next) {
+  var user = this;
+  if (this.isModified('password') || this.isNew) {
+      user.password = user.encryptPassword(user.password);
+      log.info('fuck', user.password);
+      next();
+  } else {
+    return next();
+  }
+});
 
 User.methods.encryptPassword = function(password) {
-    return crypto.pbkdf2Sync(password, this.salt, 10000, 512);
+  log.info(password);
+  return passwordHash.generate(password);
 };
 
 User.virtual('userId')
@@ -35,18 +48,8 @@ User.virtual('userId')
     return this.id;
   });
 
-User.virtual('password')
-  .set(function(password) {
-    this._plainPassword = password;
-    this.salt = crypto.randomBytes(32).toString('base64');
-    //more secure - this.salt = crypto.randomBytes(128).toString('base64');
-    this.hashedPassword = this.encryptPassword(password);
-  })
-  .get(function() { return this._plainPassword; });
-
-
 User.methods.checkPassword = function(password) {
-  return this.encryptPassword(password) === this.hashedPassword;
+  return passwordHash.verify(password, this.password);
 };
 
 // validation
