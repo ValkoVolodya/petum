@@ -62,13 +62,13 @@ router.post(
           log.info(err);
           if(err.name == 'ValidationError') {
             res.statusCode = 400;
-            res.send({
+            return res.send({
               status: status.EMAIL_IS_ALREADY_TAKEN,
               message: "That email address already exists"
             });
           } else {
             res.statusCode = 500;
-            res.send({
+            return res.send({
               status: status.WRONG_JSON,
               message: "Server error"
             });
