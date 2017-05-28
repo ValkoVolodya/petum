@@ -1,20 +1,20 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    Client = new Schema({
+    Device = new Schema({
       name: {
         type: String,
         unique: true,
         required: true
       },
-      clientId: {
+      deviceId: {
         type: String,
         unique: true,
         required: true
       },
-      clientSecret: {
+      userId: {
         type: String,
-        required: true
+        required: false,
       }
     });
 
-module.exports = mongoose.model('Client', Client);
+module.exports = mongoose.model('Device', Device);

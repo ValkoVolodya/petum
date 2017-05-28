@@ -5,7 +5,7 @@ var ajv = new Ajv({ allErrors: true, verbose: true });
   "type": "object",
   "required": ["name", "email", "password"],
   "properties": {
-    "name": {"type": "string"},
+    "name": {"type": "string", "minLength": 4},
     "email": {"type": "string", "format": "email"},
     "password": {"type": "string", "minLength": 8}
   }

@@ -13,6 +13,7 @@ var status = require('./statuses');
 
 var db = require(libs + 'db/mongoose');
 var User = require(libs + 'model/user');
+var Device = require(libs + 'logic/device');
 var validateUser = require(libs + 'model/schema/user');
 
 router.get(
@@ -118,72 +119,88 @@ router.post(
   }
 );
 
-router.post('/login', function(req, res) {
-  log.info(req.body);
-  if (
-    !req.body.hasOwnProperty('email')
-    || !req.body.hasOwnProperty('password')
-  ) {
-    res.statusCode = 400;
-    return res.send({
-      status: status.WRONG_JSON,
-      message: "Missing required fields"
-    })
-  }
-  var valid = validateUser.login(req.body);
-  if (!valid) {
-    let statusForSend = status.WRONG_JSON;
-    let errors = validateUser.login.errors;
-    log.info(errors);
-    let statuses = {
-      'email': status.EMAIL_INCORRECT_FORMAT,
-      'password': status.PASSWORD_INCORRECT_FORMAT,
-    }
-    errors.forEach(function (item) {
-      let prop = item.dataPath.substr(1);
-      if (statuses.hasOwnProperty(prop)) {
-        statusForSend = statuses[prop];
-      }
-    })
-    var message = errors.reduce(function(res, item) {
-      return res + item.message + '; ';
-    }, '');
-    res.statusCode = 422;
-    return res.send({
-      status: statusForSend,
-      message
-    });
-  }
-  User.findOne({
-    email: req.body.email
-  }, function(err, user) {
-    if (err) throw err;
-
-    if (!user) {
-      res.statusCode = 401;
+router.post(
+  '/login',
+  function(req, res) {
+    log.info(req.body);
+    if (
+      !req.body.hasOwnProperty('email')
+      || !req.body.hasOwnProperty('password')
+    ) {
+      res.statusCode = 400;
       return res.send({
-        success: status.USER_DOES_NOT_EXIST,
-        message: 'Authentication failed. User not found.'
-      });
-    } else {
-      if (user.checkPassword(req.body.password)) {
-        var token = jwt.sign(user, config.get('security:secret'), {
-          expiresIn: 86400  // in seconds
-        });
-        res.statusCode = 200;
-        return res.send({
-          status: status.STATUS_OK,
-          token: 'JWT ' + token
-        });
-      } else {
-        res.statusCode = 401;
-        return res.send({
-          status: status.WRONG_PASSWORD,
-          message: 'Authentication failed. Passwords did not match.'
-        });
-      }
+        status: status.WRONG_JSON,
+        message: "Missing required fields"
+      })
     }
-  });
+    var valid = validateUser.login(req.body);
+    if (!valid) {
+      let statusForSend = status.WRONG_JSON;
+      let errors = validateUser.login.errors;
+      log.info(errors);
+      let statuses = {
+        'email': status.EMAIL_INCORRECT_FORMAT,
+        'password': status.PASSWORD_INCORRECT_FORMAT,
+      }
+      errors.forEach(function (item) {
+        let prop = item.dataPath.substr(1);
+        if (statuses.hasOwnProperty(prop)) {
+          statusForSend = statuses[prop];
+        }
+      })
+      var message = errors.reduce(function(res, item) {
+        return res + item.message + '; ';
+      }, '');
+      res.statusCode = 422;
+      return res.send({
+        status: statusForSend,
+        message
+      });
+    }
+    User.findOne(
+      {
+        email: req.body.email
+      },
+      function(err, user) {
+        if (err) throw err;
+
+        if (!user) {
+          res.statusCode = 401;
+          return res.send({
+            success: status.USER_DOES_NOT_EXIST,
+            message: 'Authentication failed. User not found.'
+          });
+        } else {
+          if (user.checkPassword(req.body.password)) {
+            var token = jwt.sign(user, config.get('security:secret'), {
+              expiresIn: 86400  // in seconds
+            });
+            Device.getByUserId(user.id, function(err, devices) {
+              if (!err) {
+                res.statusCode = 200;
+                return res.send({
+                  status: status.STATUS_OK,
+                  token: 'JWT ' + token,
+                  devices: devices
+                });
+              } else {
+                res.statusCode = 200;
+                return res.send({
+                  status: status.STATUS_OK,
+                  token: 'JWT ' + token,
+                  devices: {}
+                });
+              }
+            })
+          } else {
+            res.statusCode = 401;
+            return res.send({
+              status: status.WRONG_PASSWORD,
+              message: 'Authentication failed. Passwords did not match.'
+            });
+          }
+        }
+      });
 });
 
 module.exports = router;

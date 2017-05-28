@@ -11,7 +11,7 @@ var Pet = require(libs + 'model/pet');
 
 router.get(
   '/',
-  passport.authenticate('bearer', { session: false }),
+  passport.authenticate('jwt', { session: false }),
   function(req, res) {
     Pet.find(function(err, pets) {
       if(!err) {
@@ -27,7 +27,7 @@ router.get(
 
 router.get(
   '/:id',
-  passport.authenticate('bearer', { session: false }),
+  passport.authenticate('jwt', { session: false }),
   function(req, res) {
     Pet.findById(req.params.id, function (err, pet) {
       if (!pet) {
@@ -47,7 +47,7 @@ router.get(
 
 router.post(
   '/create',
-  passport.authenticate('bearer', { session: false }),
+  passport.authenticate('jwt', { session: false }),
   function(req, res) {
 
     var pet = new Pet({
@@ -75,33 +75,6 @@ router.post(
       }
     });
   }
-)
-
-exports.create = function(req, res) {
-  var pet = new Pet({
-    name: req.body.name,
-    sort: req.body.sort,
-    userId: req.body.userId,
-    weight: req.body.weight,
-    age: req.body.age,
-  });
-
-  pet.save(function (err) {
-    if (!err) {
-        log.info("pet created");
-        return res.send({ status: STATUS_OK, pet: pet });
-    } else {
-        console.log(err);
-        if(err.name == 'ValidationError') {
-            res.statusCode = 400;
-            res.send({ status: status.WRONG_JSON });
-        } else {
-            res.statusCode = 500;
-            res.send({ status: 'Server error' });
-        }
-        log.error('Internal error(%d): %s',res.statusCode,err.message);
-    }
-  });
-}
+);
 
 module.exports = router;

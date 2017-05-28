@@ -12,13 +12,17 @@ require(libs + 'auth/auth')(passport);
 var config = require('./config');
 var log = require('./log')(module);
 
-var api = require('./routes/api');
 var user = require('./routes/user');
 var pet = require('./routes/pet');
+var device = require('./routes/device');
 var record = require('./routes/record');
 var status = require('./routes/statuses');
 
 var app = express();
+
+const localOptions = {
+  usernameField: 'email'
+};
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -26,8 +30,8 @@ app.use(cookieParser());
 app.use(methodOverride());
 app.use(passport.initialize());
 
-app.use('/api', api);
 app.use('/api/user', user);
+app.use('/api/device', device);
 app.use('/api/pet', pet);
 app.use('/api/record', record);
 
@@ -43,7 +47,7 @@ app.use(function(req, res, next){
 
 // error handlers
 app.use(function(err, req, res, next) {
-  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+  if (err instanceof SyntaxError && err.status === 400 ) {
     log.error(`Bad JSON - ${err.message}`);
     res.json({
       status: status.WRONG_JSON,
