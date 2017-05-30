@@ -9,18 +9,8 @@ deviceCreate = {
   "required": ["name", "deviceId"],
   "properties": {
     "name": {"type": "string", "minLength": 4},
-    "deviceId": {"type": "string"},
+    "deviceId": {"type": "string", "minLength": 4},
   }
 }
 
-userLogin = {
- "type": "object",
- "required": ["email", "password"],
- "properties": {
-   "email": {"type": "string", "minLength": 1},
-   "password": {"type": "string", "minLength": 1}
- }
-}
-
-exports.register = ajv.compile(userRegister);
-exports.login = ajv.compile(userLogin);
+exports.create = ajv.compile(deviceCreate);

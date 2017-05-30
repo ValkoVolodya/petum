@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
     Device = new Schema({
       name: {
         type: String,
-        unique: true,
+        unique: false,
         required: true
       },
       deviceId: {
