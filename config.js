@@ -6,5 +6,9 @@
   },
   "mongoose": {
     "uri": "mongodb://petum:petum@ds145780.mlab.com:45780/heroku_lx2qvmcg"
+  },
+  "ajvConfig": {
+    "allErrors": "true",
+    "verbose": "true"
   }
 }

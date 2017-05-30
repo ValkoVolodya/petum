@@ -1,6 +1,6 @@
-var Ajv = require('ajv');
-var ajv = new Ajv({ allErrors: true });
-
+var log = require(libs + 'log')(module);
+var config = require(libs + 'config');
+var ajv = new Ajv(config.get('ajvConfig'));
 petJSONSchema = {
   "type": "object",
   "required": ["name", "sort", "userId"],

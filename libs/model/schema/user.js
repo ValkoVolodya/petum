@@ -1,5 +1,6 @@
-var Ajv = require('ajv');
-var ajv = new Ajv({ allErrors: true, verbose: true });
+var log = require(libs + 'log')(module);
+var config = require(libs + 'config');
+var ajv = new Ajv(config.get('ajvConfig'));
 
  userRegister = {
   "type": "object",
