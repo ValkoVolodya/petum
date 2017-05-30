@@ -10,6 +10,7 @@ function validateRequiredExists (obj, props, callback) {
 
 function validateFields (obj, validateMethod) {
   var valid = validateMethod(obj);
+  log.info('valid', valid);
   if (!valid){
     return validateMethod.errors;
   }

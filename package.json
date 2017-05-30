@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./app/restapi.js"
+    "start": "node ./app/restapi.js",
+    "restart": "nodemon ./app/restapi.js"
   },
   "author": "",
   "license": "ISC",
