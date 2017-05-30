@@ -7,7 +7,7 @@ var jwt = require('jsonwebtoken');
 var methodOverride = require('method-override');
 
 var libs = process.cwd() + '/libs/';
-require(libs + 'auth/auth')(passport);
+const passportService = require(libs + 'auth/auth')(passport);
 
 var config = require('./config');
 var log = require('./log')(module);

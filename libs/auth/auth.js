@@ -12,9 +12,9 @@ var User = require(libs + 'model/user');
 // Setup work and export for the JWT passport strategy
 module.exports = function(passport) {
   var opts = {};
-  opts.jwtFromRequest = ExtractJwt.fromAuthHeader();
+  opts.jwtFromRequest = ExtractJwt.fromBodyField();
   opts.secretOrKey = config.get('security:secret');
-  passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
+  passport.use(new JwtStrategy(opts, function (jwt_payload, done){
     log.info('jwt data', Object.keys(jwt_payload));
     log.info('jwt data', jwt_payload._doc);
     User.findById(jwt_payload._doc._id, function(err, user) {

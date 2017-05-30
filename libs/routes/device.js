@@ -4,21 +4,23 @@ var router = express.Router();
 
 var libs = process.cwd() + '/libs/';
 var log = require(libs + 'log')(module);
-var status = require('./statuses');
+var status = require(libs + 'routes/statuses');
+var jwtVerify = require(libs + 'auth/authVerify');
 
 var db = require(libs + 'db/mongoose');
 var Device = require(libs + 'model/device');
 var DeviceLogic = require(libs + 'logic/device');
 
+router.use(jwtVerify);
+
 router.post(
   '/create',
-  passport.authenticate('jwt', { session: false }),
-  function(req, res, next) {
-    log.info('I`m here', req.body.name, req.body.deviceId, user);
+  function(req, res) {
+    log.info('I`m here', req.body.name, req.body.deviceId, req.user);
     var device = new Device({
       name: req.body.name,
       deviceId: req.body.deviceId,
-      userId: user.id,
+      userId: req.user._id,
     });
 
     device.save(function (err) {
