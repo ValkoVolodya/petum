@@ -16,6 +16,6 @@ var status = {
   TOKEN_EXPIRED: 14,
   DEVICE_ALREADY_EXISTS: 15,
   DEVICE_ID_INCORRECT_FORMAT: 16
-}
+};
 
 module.exports = status;

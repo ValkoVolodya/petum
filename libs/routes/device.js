@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 var express = require('express');
 var passport = require('passport');
@@ -26,7 +26,7 @@ function deviceCreateValidation (req, res, next) {
   }
   var statuses = {
     'name': status.DEVICE_NAME_INCORRECT_FORMAT,
-    'deviceId': status.DEVICE_ID_INCORRECT_FORMAT,
+    'deviceId': status.DEVICE_ID_INCORRECT_FORMAT
   };
   var errors = validate.validateFields(req.body, validateDevice.create);
   if (errors) {
@@ -34,7 +34,7 @@ function deviceCreateValidation (req, res, next) {
     return res.send(validate.makeValidationResponse(errors, statuses));
   }
   return next();
-};
+}
 
 function deviceDeleteValidation (req, res, next) {
   log.info('I`m here');
@@ -47,7 +47,7 @@ function deviceDeleteValidation (req, res, next) {
     })
   }
   var statuses = {
-    'deviceId': status.DEVICE_ID_INCORRECT_FORMAT,
+    'deviceId': status.DEVICE_ID_INCORRECT_FORMAT
   };
   log.info('validateFields');
   var errors = validate.validateFields(req.body, validateDevice.delete);
@@ -58,7 +58,7 @@ function deviceDeleteValidation (req, res, next) {
   }
   log.info('next');
   return next();
-};
+}
 
 function deviceRenameValidation (req, res, next) {
   if (!validate.validateRequiredExists(req.body, ['name', 'deviceId'])) {
@@ -70,7 +70,7 @@ function deviceRenameValidation (req, res, next) {
   }
   var statuses = {
     'name': status.DEVICE_NAME_INCORRECT_FORMAT,
-    'deviceId': status.DEVICE_ID_INCORRECT_FORMAT,
+    'deviceId': status.DEVICE_ID_INCORRECT_FORMAT
   };
   var errors = validate.validateFields(req.body, validateDevice.rename);
   if (errors) {
@@ -78,7 +78,7 @@ function deviceRenameValidation (req, res, next) {
     return res.send(validate.makeValidationResponse(errors, statuses));
   }
   return next();
-};
+}
 
 router.use(jwtVerify);
 
@@ -89,7 +89,7 @@ router.post(
     var device = new Device({
       name: req.body.name,
       deviceId: req.body.deviceId,
-      userId: req.user._id,
+      userId: req.user._id
     });
 
     Device.findOne({ deviceId: device.deviceId }, function(err, item) {
@@ -115,7 +115,7 @@ router.post(
               });
           } else {
             console.log(err);
-            if(err.name == 'ValidationError') {
+            if(err.name === 'ValidationError') {
               res.statusCode = 400;
               res.send({
                 status: status.WRONG_JSON,
@@ -140,7 +140,7 @@ router.use('/delete', deviceDeleteValidation);
 router.post(
   '/delete',
   function(req, res) {
-    Device.findByIdAndRemove({ deviceId: eq.body.deviceId }, function(err) {
+    Device.find({ deviceId: req.body.deviceId }).remove(function(err) {
       if (err) {
         res.statusCode = 500;
         return res.send({
@@ -153,7 +153,7 @@ router.post(
         status: status.STATUS_OK,
         message: 'Device is successfully deleted'
       });
-    })
+    });
   }
 );
 
@@ -179,6 +179,6 @@ router.post(
       });
     });
   }
-)
+);
 
 module.exports = router;
