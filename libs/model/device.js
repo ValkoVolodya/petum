@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
         required: true
       },
       userId: {
-        type: String,
+        type: Schema.Types.ObjectId,
         required: false,
       }
     });

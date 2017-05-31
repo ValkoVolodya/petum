@@ -5,8 +5,8 @@ var mongoose = require('mongoose'),
         type: Date,
         default: Date.now,
       },
-      petId: {
-        type: Schema.Types.ObjectId,
+      deviceId: {
+        type: String,
         required: true,
       },
       temperature: {

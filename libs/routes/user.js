@@ -15,10 +15,11 @@ var db = require(libs + 'db/mongoose');
 var User = require(libs + 'model/user');
 var Device = require(libs + 'logic/device');
 var validateUser = require(libs + 'model/schema/user');
+var validate = require(libs + 'validation/validate');
+
 
 router.get(
   '/info',
-  passport.authenticate('bearer', { session: false }),
   function(req, res) {
     res.json({
     	user_id: req.user.userId,
@@ -28,8 +29,7 @@ router.get(
 );
 
 router.get(
-  '/:id',
-  passport.authenticate('bearer', { session: false }),
+  '/edit',
   function(req, res) {
     return User.findById(req.params.id, function (err, user) {
       if (!user) {
@@ -47,45 +47,21 @@ router.get(
   }
 );
 
+router.use(
+  '/register',
+  validate.getValidationMiddleware(
+    ['name', 'email', 'password'],
+    {
+      'name': status.USER_NAME_INCORRECT_FORMAT,
+      'email': status.EMAIL_INCORRECT_FORMAT,
+      'password': status.PASSWORD_INCORRECT_FORMAT,
+    },
+    validateUser.register
+  )
+);
 router.post(
   '/register',
   function(req, res) {
-    if (
-      !req.body.hasOwnProperty('name')
-      || !req.body.hasOwnProperty('email')
-      || !req.body.hasOwnProperty('password')
-    ) {
-      res.statusCode = 400;
-      return res.send({
-        status: status.WRONG_JSON,
-        message: "Missing required fields"
-      })
-    }
-    var valid = validateUser.register(req.body);
-    if (!valid) {
-      let statusForSend = status.WRONG_JSON;
-      let errors = validateUser.register.errors;
-      let statuses = {
-        'name': status.USER_NAME_INCORRECT_FORMAT,
-        'email': status.EMAIL_INCORRECT_FORMAT,
-        'password': status.PASSWORD_INCORRECT_FORMAT,
-      }
-      errors.forEach(function (item) {
-        let prop = item.dataPath.substr(1);
-        if (statuses.hasOwnProperty(prop)) {
-          statusForSend = statuses[prop];
-        }
-      })
-      var message = errors.reduce(function(res, item) {
-        return res + item.message + '; ';
-      }, '');
-      res.statusCode = 422;
-      return res.send({
-        status: statusForSend,
-        message
-      });
-    }
-
     User.findOne({ email: req.body.email }, function(err, item) {
       if (err) throw err;
       if (item) {
@@ -119,44 +95,20 @@ router.post(
   }
 );
 
+router.use(
+  '/login',
+  validate.getValidationMiddleware(
+    ['email', 'password'],
+    {
+      'email': status.EMAIL_INCORRECT_FORMAT,
+      'password': status.PASSWORD_INCORRECT_FORMAT,
+    },
+    validateUser.login
+  )
+);
 router.post(
   '/login',
   function(req, res) {
-    log.info(req.body);
-    if (
-      !req.body.hasOwnProperty('email')
-      || !req.body.hasOwnProperty('password')
-    ) {
-      res.statusCode = 400;
-      return res.send({
-        status: status.WRONG_JSON,
-        message: "Missing required fields"
-      })
-    }
-    var valid = validateUser.login(req.body);
-    if (!valid) {
-      let statusForSend = status.WRONG_JSON;
-      let errors = validateUser.login.errors;
-      log.info(errors);
-      let statuses = {
-        'email': status.EMAIL_INCORRECT_FORMAT,
-        'password': status.PASSWORD_INCORRECT_FORMAT,
-      }
-      errors.forEach(function (item) {
-        let prop = item.dataPath.substr(1);
-        if (statuses.hasOwnProperty(prop)) {
-          statusForSend = statuses[prop];
-        }
-      })
-      var message = errors.reduce(function(res, item) {
-        return res + item.message + '; ';
-      }, '');
-      res.statusCode = 422;
-      return res.send({
-        status: statusForSend,
-        message
-      });
-    }
     User.findOne(
       {
         email: req.body.email
@@ -180,15 +132,15 @@ router.post(
                 res.statusCode = 200;
                 return res.send({
                   status: status.STATUS_OK,
-                  token: token,
-                  devices: devices
+                  token: 'JWT ' + token,
+                  devices: {}
                 });
               } else {
                 res.statusCode = 200;
                 return res.send({
                   status: status.STATUS_OK,
-                  token: 'JWT ' + token,
-                  devices: {}
+                  token: token,
+                  devices: devices
                 });
               }
             })

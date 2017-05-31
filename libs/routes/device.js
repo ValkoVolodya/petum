@@ -18,6 +18,24 @@ var validate = require(libs + 'validation/validate');
 
 router.use(jwtVerify);
 
+router.get(
+  '/',
+  function(req, res) {
+    Device.find(function(err, devices) {
+      if(err) {
+        res.statusCode = 500;
+        log.error('Internal server error(%d): %s',res.statusCode,err.message);
+        return res.send({
+          status: status.SERVER_ERROR,
+          message: "Internal server error"
+        });
+      }
+      res.statusCode = 200;
+      return res.send(pets);
+    });
+  }
+);
+
 router.use(
   '/create',
   validate.getValidationMiddleware(
@@ -95,7 +113,7 @@ router.use(
 router.post(
   '/delete',
   function(req, res) {
-    Device.find({ deviceId: req.body.deviceId }).remove(function(err) {
+    DeviceLogic.getByDeviceId(req.body.deviceId, function(err, device) {
       if (err) {
         res.statusCode = 500;
         return res.send({
@@ -103,10 +121,33 @@ router.post(
           message: err.message
         });
       }
-      res.statusCode = 200;
-      return res.send({
-        status: status.STATUS_OK,
-        message: 'Device is successfully deleted'
+      if (!device) {
+        res.statusCode = 422;
+        return res.send({
+          status: status.DEVICE_ID_INCORRECT_FORMAT,
+          message: 'Device with this id not exists'
+        });
+      }
+      if (device.userId !== req.user._id) {
+        res.statusCode = 403;
+        return res.send({
+          status: status.OTHER_USER_OWNS_THIS_DEVICE_ID,
+          message: 'You can`t delete this device'
+        });
+      }
+      Device.find({ deviceId: req.body.deviceId }).remove(function(err) {
+        if (err) {
+          res.statusCode = 500;
+          return res.send({
+            status: status.SERVER_ERROR,
+            message: err.message
+          });
+        }
+        res.statusCode = 200;
+        return res.send({
+          status: status.STATUS_OK,
+          message: 'Device is successfully deleted'
+        });
       });
     });
   }
