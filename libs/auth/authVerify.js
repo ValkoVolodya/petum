@@ -14,8 +14,6 @@ module.exports = function(req, res, next) {
 
   // check header or url parameters or post parameters for token
   var token = req.body.token || req.params.token || req.headers['x-access-token'];
-  log.info('token ', token);
-  // decode token
   // verifies secret and checks exp
   if (token) {
     jwt.verify(token, config.get('security:secret'), function(err, decoded) {
@@ -23,14 +21,16 @@ module.exports = function(req, res, next) {
         log.info('error ', err);
         res.status = 401;
         resStatus = status.WRONG_TOKEN;
-        if (err.name === "TokenExpiredError") {
+        if (err.name === 'TokenExpiredError') {
           resStatus = status.TOKEN_EXPIRED;
         }
-        return res.send({ status: resStatus });
+        return res.send({
+          status: resStatus,
+          message: 'Token expired'
+        });
       }
       // if everything is good, save to request for use in other routes
       else {
-        log.info('user ', decoded);
         req.user = decoded._doc;
         return next();
       }

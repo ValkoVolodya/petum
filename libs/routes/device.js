@@ -15,74 +15,20 @@ var DeviceLogic = require(libs + 'logic/device');
 var validateDevice = require(libs + 'model/schema/device');
 var validate = require(libs + 'validation/validate');
 
-// TODO: Make file for this later, and add some DRY
-function deviceCreateValidation (req, res, next) {
-  if (!validate.validateRequiredExists(req.body, ['name', 'deviceId'])) {
-    res.statusCode = 400;
-    return res.send({
-      status: status.WRONG_JSON,
-      message: "Missing required fields"
-    })
-  }
-  var statuses = {
-    'name': status.DEVICE_NAME_INCORRECT_FORMAT,
-    'deviceId': status.DEVICE_ID_INCORRECT_FORMAT
-  };
-  var errors = validate.validateFields(req.body, validateDevice.create);
-  if (errors) {
-    res.statusCode = 422;
-    return res.send(validate.makeValidationResponse(errors, statuses));
-  }
-  return next();
-}
-
-function deviceDeleteValidation (req, res, next) {
-  log.info('I`m here');
-  if (!validate.validateRequiredExists(req.body, ['deviceId'])) {
-    log.info('validateRequiredExists');
-    res.statusCode = 400;
-    return res.send({
-      status: status.WRONG_JSON,
-      message: "Missing required fields"
-    })
-  }
-  var statuses = {
-    'deviceId': status.DEVICE_ID_INCORRECT_FORMAT
-  };
-  log.info('validateFields');
-  var errors = validate.validateFields(req.body, validateDevice.delete);
-  if (errors) {
-    log.info('errors', errors);
-    res.statusCode = 422;
-    return res.send(validate.makeValidationResponse(errors, statuses));
-  }
-  log.info('next');
-  return next();
-}
-
-function deviceRenameValidation (req, res, next) {
-  if (!validate.validateRequiredExists(req.body, ['name', 'deviceId'])) {
-    res.statusCode = 400;
-    return res.send({
-      status: status.WRONG_JSON,
-      message: "Missing required fields"
-    })
-  }
-  var statuses = {
-    'name': status.DEVICE_NAME_INCORRECT_FORMAT,
-    'deviceId': status.DEVICE_ID_INCORRECT_FORMAT
-  };
-  var errors = validate.validateFields(req.body, validateDevice.rename);
-  if (errors) {
-    res.statusCode = 422;
-    return res.send(validate.makeValidationResponse(errors, statuses));
-  }
-  return next();
-}
 
 router.use(jwtVerify);
 
-router.use('/create', deviceCreateValidation);
+router.use(
+  '/create',
+  validate.getValidationMiddleware(
+    ['name', 'deviceId'],
+    {
+      'name': status.DEVICE_NAME_INCORRECT_FORMAT,
+      'deviceId': status.DEVICE_ID_INCORRECT_FORMAT
+    },
+    validateDevice.create
+  )
+);
 router.post(
   '/create',
   function(req, res) {
@@ -136,7 +82,16 @@ router.post(
   }
 );
 
-router.use('/delete', deviceDeleteValidation);
+router.use(
+  '/delete',
+  validate.getValidationMiddleware(
+    ['deviceId'],
+    {
+      'deviceId': status.DEVICE_ID_INCORRECT_FORMAT
+    },
+    validateDevice.delete
+  )
+);
 router.post(
   '/delete',
   function(req, res) {
@@ -157,7 +112,17 @@ router.post(
   }
 );
 
-router.use('/rename', deviceRenameValidation);
+router.use(
+  '/rename',
+  validate.getValidationMiddleware(
+    ['name', 'deviceId'],
+    {
+      'name': status.DEVICE_NAME_INCORRECT_FORMAT,
+      'deviceId': status.DEVICE_ID_INCORRECT_FORMAT
+    },
+    validateDevice.rename
+  )
+);;
 router.post(
   '/rename',
   function(req, res) {
