@@ -132,7 +132,7 @@ router.post(
                 res.statusCode = 200;
                 return res.send({
                   status: status.STATUS_OK,
-                  token: 'JWT ' + token,
+                  token: token,
                   devices: devices
                 });
               } else {
