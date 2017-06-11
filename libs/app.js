@@ -24,6 +24,10 @@ const localOptions = {
   usernameField: 'email'
 };
 
+app.engine('html', require('ejs').renderFile);
+app.use(express.static(process.cwd() + '/static/'));
+
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -34,6 +38,14 @@ app.use('/api/user', user);
 app.use('/api/device', device);
 app.use('/api/pet', pet);
 app.use('/api/record', record);
+
+app.get('/', function(req, res) {
+  res.render('landing.html');
+});
+
+app.get('/login', function(req, res) {
+  res.render('views/public/index');
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next){
