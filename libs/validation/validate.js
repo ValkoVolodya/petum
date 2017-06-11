@@ -39,7 +39,6 @@ function makeValidationResponse (errors, statuses) {
 };
 
 function getValidationMiddleware(requiredFields, statuses, validationMethod) {
-  log.info('I`m here');
   return function (req, res, next) {
     if (!validateRequiredExists(req.body, requiredFields)) {
       res.statusCode = 400;

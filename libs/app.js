@@ -20,10 +20,6 @@ var status = require('./routes/statuses');
 
 var app = express();
 
-const localOptions = {
-  usernameField: 'email'
-};
-
 app.engine('html', require('ejs').renderFile);
 app.use(express.static(process.cwd() + '/static/'));
 
