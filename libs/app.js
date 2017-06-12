@@ -17,10 +17,14 @@ var pet = require('./routes/pet');
 var device = require('./routes/device');
 var record = require('./routes/record');
 var status = require('./routes/statuses');
+let login = require('./routes/web/login');
+let landing = require('./routes/web/landing');
 
 var app = express();
 
 app.engine('html', require('ejs').renderFile);
+app.set('views', process.cwd() + '/views');
+app.set('view engine', 'ejs');
 app.use(express.static(process.cwd() + '/static/'));
 
 
@@ -30,27 +34,20 @@ app.use(cookieParser());
 app.use(methodOverride());
 app.use(passport.initialize());
 
+app.use('/user', login);
+app.use('/', landing);
 app.use('/api/user', user);
 app.use('/api/device', device);
 app.use('/api/pet', pet);
 app.use('/api/record', record);
-
-app.get('/', function(req, res) {
-  res.render('landing.html');
-});
-
-app.get('/login', function(req, res) {
-  res.render('views/public/index');
-});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next){
   res.status(404);
   log.debug('%s %d %s', req.method, res.statusCode, req.url);
   res.json({
-  	error: 'Not found'
+      error: 'Not found'
   });
-  return;
 });
 
 // error handlers
@@ -69,9 +66,8 @@ app.use(function(err, req, res, next){
   log.error('%s %d %s', req.method, res.statusCode, err.message);
   res.json({
     status: status.SERVER_ERROR,
-  	error: err.message
+    error: err.message
   });
-  return;
 });
 
 module.exports = app;
