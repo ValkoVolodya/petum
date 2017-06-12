@@ -12,6 +12,6 @@ petJSONSchema = {
     "sort": {"type": "string"},
     "userId": {"type": "string"}
   }
-}
+};
 
 module.exports.validate = ajv.compile(petJSONSchema);
