@@ -1,19 +1,19 @@
 'use strict';
 
-var express = require('express');
-var passport = require('passport');
-var router = express.Router();
+let express = require('express');
+let passport = require('passport');
+let router = express.Router();
 
-var libs = process.cwd() + '/libs/';
-var log = require(libs + 'log')(module);
-var status = require(libs + 'routes/statuses');
-var jwtVerify = require(libs + 'auth/authVerify');
+let libs = process.cwd() + '/libs/';
+let log = require(libs + 'log')(module);
+let status = require(libs + 'routes/statuses');
+let jwtVerify = require(libs + 'auth/authVerify');
 
-var db = require(libs + 'db/mongoose');
-var Device = require(libs + 'model/device');
-var DeviceLogic = require(libs + 'logic/device');
-var validateDevice = require(libs + 'model/schema/device');
-var validate = require(libs + 'validation/validate');
+let db = require(libs + 'db/mongoose');
+let Device = require(libs + 'model/device');
+let DeviceLogic = require(libs + 'logic/device');
+let validateDevice = require(libs + 'model/schema/device');
+let validate = require(libs + 'validation/validate');
 
 
 router.use(jwtVerify);
@@ -50,7 +50,7 @@ router.use(
 router.post(
   '/create',
   function(req, res) {
-    var device = new Device({
+    let device = new Device({
       name: req.body.name,
       deviceId: req.body.deviceId,
       userId: req.user._id

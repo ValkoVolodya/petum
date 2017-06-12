@@ -1,13 +1,13 @@
-var express = require('express');
-var passport = require('passport');
-var router = express.Router();
+let express = require('express');
+let passport = require('passport');
+let router = express.Router();
 
-var libs = process.cwd() + '/libs/';
-var log = require(libs + 'log')(module);
-var status = require('./statuses');
+let libs = process.cwd() + '/libs/';
+let log = require(libs + 'log')(module);
+let status = require('./statuses');
 
-var db = require(libs + 'db/mongoose');
-var Pet = require(libs + 'model/pet');
+let db = require(libs + 'db/mongoose');
+let Pet = require(libs + 'model/pet');
 
 router.get(
   '/',
@@ -50,7 +50,7 @@ router.post(
   passport.authenticate('jwt', { session: false }),
   function(req, res) {
 
-    var pet = new Pet({
+    let pet = new Pet({
       name: req.body.name,
       sort: req.body.sort,
       userId: req.body.userId,
@@ -64,7 +64,7 @@ router.post(
           return res.send({ status: status.STATUS_OK, pet: pet });
       } else {
           console.log(err);
-          if(err.name == 'ValidationError') {
+          if(err.name === 'ValidationError') {
               res.statusCode = 400;
               res.send({ status: status.WRONG_JSON });
           } else {

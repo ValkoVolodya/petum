@@ -1,4 +1,6 @@
-var status = {
+'use strict';
+
+const status = {
   STATUS_OK: 0,
   WRONG_JSON: 1,
   WRONG_TOKEN: 2,

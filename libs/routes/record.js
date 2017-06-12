@@ -1,20 +1,20 @@
 'use strict';
 
-var express = require('express');
-var passport = require('passport');
-var router = express.Router();
+let express = require('express');
+let passport = require('passport');
+let router = express.Router();
 
-var libs = process.cwd() + '/libs/';
-var log = require(libs + 'log')(module);
-var status = require(libs + 'routes/statuses');
-var jwtVerify = require(libs + 'auth/authVerify');
+let libs = process.cwd() + '/libs/';
+let log = require(libs + 'log')(module);
+let status = require(libs + 'routes/statuses');
+let jwtVerify = require(libs + 'auth/authVerify');
 
-var db = require(libs + 'db/mongoose');
-var Record = require(libs + 'model/record');
-var DeviceLogic = require(libs + 'logic/device');
-var Device = require(libs + 'model/device');
-var validateRecord = require(libs + 'model/schema/record');
-var validate = require(libs + 'validation/validate');
+let db = require(libs + 'db/mongoose');
+let Record = require(libs + 'model/record');
+let DeviceLogic = require(libs + 'logic/device');
+let Device = require(libs + 'model/device');
+let validateRecord = require(libs + 'model/schema/record');
+let validate = require(libs + 'validation/validate');
 
 function checkDevice(req, res, next) {
   DeviceLogic.getByDeviceId(
@@ -37,15 +37,15 @@ function checkDevice(req, res, next) {
       return next();
     }
   );
-};
+}
 
 router.use('/temperature', checkDevice);
 router.get(
   '/temperature',
   function(req, res) {
-    var record = new Record({
+    let record = new Record({
       deviceId: req.query.deviceId,
-      temperature: req.query.temperature,
+      temperature: req.query.temperature
     });
     record.save(function (err) {
       if (!err) {
@@ -56,7 +56,7 @@ router.get(
           record: record
         });
       } else {
-        if(err.name == 'ValidationError') {
+        if(err.name === 'ValidationError') {
           res.statusCode = 400;
           res.send({
             status: status.WRONG_JSON,
@@ -74,7 +74,7 @@ router.get(
   }
 );
 
-var codeToTimeRange = {
+const codeToTimeRange = {
   '0': function(date) {
     return date.setHours(date.getHours() - 1);
   },
@@ -93,13 +93,13 @@ var codeToTimeRange = {
   '5': function(date) {
     return date.setMonth(date.getMonth() - 1);
   }
-}
+};
 
 function getTimeRangeByCode(date, code) {
-  var dateCopy = new Date(date);
+  let dateCopy = new Date(date);
   log.info('date', codeToTimeRange[1](dateCopy));
   return codeToTimeRange[code](dateCopy);
-};
+}
 
 router.use('/temperature/view', jwtVerify);
 router.use(
@@ -115,7 +115,7 @@ router.use(
 );
 router.use('/temperature/view', checkDevice);
 router.post('/temperature/view', function(req, res) {
-  var datetime = new Date();
+  let datetime = new Date();
   Record.find({ deviceId: req.body.deviceId }).
   where('datestamp').gt(getTimeRangeByCode(datetime, req.body.period)).lt(datetime).
   exec(function(err, records) {

@@ -1,29 +1,29 @@
 'use strict';
 
-var express = require('express');
-var passport = require('passport');
-var jwt = require('jsonwebtoken');
+let express = require('express');
+let passport = require('passport');
+let jwt = require('jsonwebtoken');
 
-var router = express.Router();
+let router = express.Router();
 
-var libs = process.cwd() + '/libs/';
-var log = require(libs + 'log')(module);
-var config = require(libs + 'config');
-var status = require('./statuses');
+let libs = process.cwd() + '/libs/';
+let log = require(libs + 'log')(module);
+let config = require(libs + 'config');
+let status = require('./statuses');
 
-var db = require(libs + 'db/mongoose');
-var User = require(libs + 'model/user');
-var Device = require(libs + 'logic/device');
-var validateUser = require(libs + 'model/schema/user');
-var validate = require(libs + 'validation/validate');
+let db = require(libs + 'db/mongoose');
+let User = require(libs + 'model/user');
+let Device = require(libs + 'logic/device');
+let validateUser = require(libs + 'model/schema/user');
+let validate = require(libs + 'validation/validate');
 
 
 router.get(
   '/info',
   function(req, res) {
     res.json({
-    	user_id: req.user.userId,
-    	email: req.user.email,
+        user_id: req.user.userId,
+        email: req.user.email,
     });
   }
 );
@@ -71,7 +71,7 @@ router.post(
           message: "That email address already exists"
         })
       } else {
-        var user = new User({
+        let user = new User({
           name: req.body.name,
           email: req.body.email,
           password: req.body.password,
@@ -124,7 +124,7 @@ router.post(
           });
         } else {
           if (user.checkPassword(req.body.password)) {
-            var token = jwt.sign(user, config.get('security:secret'), {
+            let token = jwt.sign(user, config.get('security:secret'), {
               expiresIn: 86400  // in seconds
             });
             Device.getByUserId(user.id, function(err, devices) {
