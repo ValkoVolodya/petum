@@ -25,9 +25,13 @@
     <div class="row ptm-register-header">
       <div class="six columns offset-by-three">
         <h2 class="title">
-          Login
+          Register
         </h2>
-        <form method="post" action="/user/login">
+        <form method="post" action="/user/register">
+          <label for="name">
+            Name
+          </label>
+          <input class="u-full-width" type="text" name="name" placeholder="Your Name">
           <label for="email">
             Email
           </label>
@@ -40,8 +44,8 @@
           <input
             class="button-primary u-full-width"
             type="submit"
-            name="login"
-            value="Login"
+            name="register"
+            value="Register"
            />
         </form>
       </div>
@@ -64,6 +68,7 @@
       </div>
     </div>
   </div>
+
 
 </body>
 </html>
