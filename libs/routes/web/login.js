@@ -19,11 +19,11 @@ let validate = require(libs + 'validation/validate');
 
 
 router.get('/login', function(req, res) {
-  res.render('login.html');
+  res.render('user/login.html');
 });
 
 router.get('/register', function(req, res) {
-  res.render('register.html');
+  res.render('user/register.html');
 });
 
 router.use(
@@ -46,9 +46,9 @@ router.post('/login', function(req, res, next) {
           ? req.logIn(user, function(err) {
               return err
                 ? next(err)
-                : res.redirect('/');
+                : res.redirect('/device/dashboard');
             })
-          : res.redirect('/');
+          : res.redirect('/device/dashboard');
     }
   )(req, res, next);
 });
@@ -77,7 +77,6 @@ router.post('/register', function(req, res, next) {
     password: req.body.password,
     name: req.body.name,
   });
-  log.info('Really login');
   user.save(function(err) {
     return err
       ? next(err)

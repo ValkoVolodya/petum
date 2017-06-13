@@ -4,6 +4,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 var passport = require('passport');
 var jwt = require('jsonwebtoken');
 var methodOverride = require('method-override');
@@ -20,6 +21,7 @@ var device = require('./routes/device');
 var record = require('./routes/record');
 var status = require('./routes/statuses');
 let login = require('./routes/web/login');
+let devicesWeb = require('./routes/web/devices');
 let landing = require('./routes/web/landing');
 
 var app = express();
@@ -34,9 +36,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(methodOverride());
+app.use(session({
+  secret: config.get('security:secret')
+}));
 app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/user', login);
+app.use('/device', devicesWeb);
 app.use('/', landing);
 app.use('/api/user', user);
 app.use('/api/device', device);

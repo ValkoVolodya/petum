@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Petum: Take care everywhere!</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/skeleton.css">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+  <link rel="shortcut icon" type="image/png" href="/img/favicon.png">
+
+</head>
+<body>
+
+  <%- include('../partials/navbar') %>
+
+  <div class="container">
+    <div class="row">
+      <h5 class="ptm-header">
+        Devices
+      </h5>
+      <table>
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Device ID</th>
+          <th>Last Active</th>
+        </tr>
+        </thead>
+        <tbody>
+            <% devices.forEach(function(device){ %>
+              <tr>
+                <td>
+                  <a href=<%= "/device/view/" + device.deviceId %>>
+                    <%= device.name %>
+                  </a>
+                </td>
+                <td><%= device.deviceId %></td>
+                <td></td>
+              </tr>
+            <% })%>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <%- include('../partials/footer') %>
+
+</body>
+</html>

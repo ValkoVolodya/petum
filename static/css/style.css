@@ -73,7 +73,18 @@
 }
 
 .ptm-footer__wrapper {
-  
+
+}
+
+.ptm-line {
+  background-color: grey;
+  height: 1px;
+  width: 100%;
+}
+
+.ptm-header {
+  margin-top: 2em;
+  margin-bottom: 1em;
 }
 
 

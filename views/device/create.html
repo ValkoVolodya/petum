@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Petum: Create device</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/skeleton.css">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+  <link rel="shortcut icon" type="image/png" href="/img/favicon.png">
+
+</head>
+<body>
+
+  <div class="container">
+    <div class="row ptm-register-header">
+      <div class="six columns offset-by-three">
+        <h2 class="title">
+            Create device
+        </h2>
+        <form method="post" action="/device/create">
+          <label for="name">
+            Device Name
+          </label>
+          <input
+            class="u-full-width"
+            type="text"
+            name="name"
+            placeholder="Give Name to Your Device"
+          >
+          <label for="deviceId">
+            Device Id
+          </label>
+          <input
+            class="u-full-width"
+            type="text"
+            name="deviceId"
+            placeholder="Enter the ID of device"
+          >
+          <input
+            class="button-primary u-full-width"
+            type="submit"
+            name="create"
+            value="Create"
+           />
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="six columns offset-by-three">
+        <div class="ptm-footer__wrapper">
+            <div class="footer">
+                <div class="footer__left">
+                    2017, All Rights Reserved
+                </div>
+                <div class="footer__right">
+                    support@petum.com
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

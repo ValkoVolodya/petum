@@ -145,7 +145,7 @@ router.post(
                   devices: devices
                 });
               }
-            })
+            });
           } else {
             res.statusCode = 401;
             return res.send({
