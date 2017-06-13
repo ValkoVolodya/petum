@@ -68,15 +68,23 @@ router.post(
         device.save(function (err) {
           if (!err) {
               log.info("device created");
-              res.statusCode = 200;
-              return res.send({
-                status: status.STATUS_OK,
-                message: 'Device created successfully',
-                device: {
-                  deviceId: device.deviceId,
-                  name: device.name
+              DeviceLogic.getByUserId(device.userId, function(err, devices) {
+                if (!err) {
+                  res.statusCode = 200;
+                  return res.send({
+                    status: status.STATUS_OK,
+                    message: 'Device created successfully',
+                    devices: devices
+                  });
+                } else {
+                  res.statusCode = 200;
+                  return res.send({
+                    status: status.STATUS_OK,
+                    token: token,
+                    devices: []
+                  });
                 }
-              });
+              })
           } else {
             console.log(err);
             if(err.name === 'ValidationError') {
