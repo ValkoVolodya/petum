@@ -133,6 +133,7 @@ router.post(
                 return res.send({
                   status: status.STATUS_OK,
                   token: token,
+                  name: user.name,
                   devices: devices
                 });
               } else {
@@ -140,6 +141,7 @@ router.post(
                 return res.send({
                   status: status.STATUS_OK,
                   token: token,
+                  name: user.name,
                   devices: devices
                 });
               }
