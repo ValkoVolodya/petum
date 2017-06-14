@@ -40,10 +40,10 @@
       <tbody>
         <% records.forEach(function(record){ %>
           <tr>
+            <td><%= record.deviceId %></td>
             <td>
               <%= record.temperature %>
             </td>
-            <td><%= record.deviceId %></td>
             <td><%= record.datestamp %></td>
           </tr>
         <% })%>
