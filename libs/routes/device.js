@@ -171,7 +171,7 @@ router.use(
     },
     validateDevice.rename
   )
-);;
+);
 router.post(
   '/rename',
   function(req, res) {
@@ -185,11 +185,24 @@ router.post(
             message: err.message
           });
         }
-        res.statusCode = 200;
-        return res.send({
-          status: status.STATUS_OK,
-          message: 'Device successfully renamed'
-        })
+        DeviceLogic.getByUserId(device.userId, function(err, devices) {
+          if (!err) {
+            res.statusCode = 200;
+            return res.send({
+              status: status.STATUS_OK,
+              message: 'Device successfully renamed',
+              devices: devices
+            })
+          } else {
+            res.statusCode = 200;
+            return res.send({
+              status: status.STATUS_OK,
+              message: 'Device successfully renamed',
+              devices: []
+            });
+          }
+        });
+
       });
     });
   }
