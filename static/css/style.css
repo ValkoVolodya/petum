@@ -10,6 +10,7 @@
 .navbar-item {
     font-size: 2rem;
     margin: 4em 1em 1em;
+    width: 50px;
 }
 
 .navbar-link {
@@ -17,16 +18,18 @@
     color: #7F5959;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 320px) {
     .navbar {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
+        height: 15vh;
     }
     .navbar-item {
-        font-size: 1rem;
+        font-size: 0.5rem;
     }
 }
 
-@media (max-width: 1300px) {
+@media (min-width: 1300px) {
     .navbar {
         flex-direction: row;
     }
@@ -53,13 +56,13 @@
     text-align: right;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 320px) {
     .footer {
         font-size: 0.8rem;
     }
 }
 
-@media (max-width: 1300px) {
+@media (min-width: 1300px) {
     .footer {
         font-size: 1rem;
     }

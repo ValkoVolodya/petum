@@ -61,11 +61,11 @@ router.get('/create', function(req, res) {
   res.render('device/create.html');
 });
 
-router.get('/graph/:id', function(req, res) {
+router.get('/graph/:id/:code', function(req, res) {
   let datetime = new Date();
   log.info('DEVICE id ', req.params.id);
   Record.find({ deviceId: req.params.id }).
-  where('datestamp').gt(getTimeRangeByCode(datetime, 3)).lt(datetime).
+  where('datestamp').gt(getTimeRangeByCode(datetime, req.params.code)).lt(datetime).
   exec(function(err, records) {
     log.info('After query');
     log.info(records);
